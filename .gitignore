@@ -1,0 +1,69 @@
+# WavSent-MTL — .gitignore
+
+# ── Raw Data (large, not versioned) ─────────────────
+raw/
+data/raw/
+
+# ── Processed Arrays & Scalers (gitignored) ─────────
+data/processed/**/*.npy
+data/processed/**/*.pkl
+
+# ── Saved Model Weights ───────────────────────────────
+results/saved_models/
+*.pt
+*.h5
+*.ckpt
+
+# ── Logs ─────────────────────────────────────────────
+logs/
+*.log
+
+# ── Python Cache ─────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
+
+# ── Jupyter Checkpoints ───────────────────────────────
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ── Virtual Environments ─────────────────────────────
+venv/
+.venv/
+env/
+.env/
+wavsent-env/
+
+# ── Distribution / Packaging ─────────────────────────
+dist/
+build/
+*.egg-info/
+*.egg
+
+# ── Testing & Coverage ───────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# ── IDE & Editor ─────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ── Environment Variables ─────────────────────────────
+.env
+.env.local
+
+# ── Conda ────────────────────────────────────────────
+.conda/
+
+# ── Temporary Files ───────────────────────────────────
+*.tmp
+*.bak

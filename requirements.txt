@@ -1,0 +1,54 @@
+# WavSent-MTL — Requirements
+# Python 3.13 compatible
+# Install with: pip install -r requirements.txt
+# Then separately: pip install git+https://github.com/remigenet/TKAN.git
+
+# ── Core Framework ──────────────────────────────────
+# PyTorch: install via https://pytorch.org/ for your CUDA version
+# CPU-only (local dev):
+torch>=2.5.0
+torchvision>=0.20.0
+
+# ── Data & Numerics ─────────────────────────────────
+numpy>=1.26.4
+pandas>=2.2.2
+scipy>=1.13.1
+statsmodels>=0.14.2
+
+# ── Yahoo Finance ────────────────────────────────────
+yfinance>=0.2.40
+
+# ── Wavelet ──────────────────────────────────────────
+PyWavelets>=1.6.0
+
+# ── Feature Selection & Baselines ───────────────────
+scikit-learn>=1.5.0
+joblib>=1.4.2
+
+# ── PSO Ensemble ─────────────────────────────────────
+pyswarms>=1.3.0
+
+# ── SHAP ─────────────────────────────────────────────
+shap>=0.45.1
+
+# ── TKAN (install from GitHub separately) ────────────
+# pip install git+https://github.com/remigenet/TKAN.git
+
+# ── TCN ──────────────────────────────────────────────
+pytorch-tcn>=1.2.0
+
+# ── Notebooks ────────────────────────────────────────
+jupyter>=1.0.0
+ipykernel>=6.29.4
+ipywidgets>=8.1.3
+
+# ── Plotting ─────────────────────────────────────────
+matplotlib>=3.9.0
+seaborn>=0.13.2
+
+# ── Testing ──────────────────────────────────────────
+pytest>=8.2.2
+pytest-cov>=5.0.0
+
+# ── Utilities ────────────────────────────────────────
+tqdm>=4.66.4
