@@ -1,7 +1,6 @@
 # WavSent-MTL — .gitignore
 
 # ── Raw Data (large, not versioned) ─────────────────
-raw/
 data/raw/
 
 # ── Processed Arrays & Scalers (gitignored) ─────────

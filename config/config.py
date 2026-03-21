@@ -8,11 +8,9 @@ CONFIG = {
 
     # ─────────────────────────────────────
     # PATHS
-    # NOTE: raw/ and finbert_outputs/ live at
-    # the project root (not under data/).
     # ─────────────────────────────────────
-    'raw_data_dir':          'raw/',
-    'finbert_output_dir':    'finbert_outputs/',
+    'raw_data_dir':          'data/raw/',
+    'finbert_output_dir':    'data/finbert_outputs/',
     'kotekar_processed_dir': 'data/processed/kotekar/',
     'kaggle_processed_dir':  'data/processed/kaggle/',
     'results_dir':           'results/',
