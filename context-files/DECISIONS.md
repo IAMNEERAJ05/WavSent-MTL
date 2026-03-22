@@ -195,13 +195,30 @@ TKAN only:
 
 ### Training Protocol
 - Optimizer: Adam, weight_decay=1e-4
-- Max epochs: 100
-- Early stopping: patience=15, monitor=val_loss,
+- Max epochs: 150
+- Early stopping: patience=35, monitor=val_binary_accuracy,
   restore best weights
-- LR scheduler: ReduceLROnPlateau(factor=0.5,
-  patience=7, min_lr=1e-6)
+- LR scheduler: ReduceLROnPlateau(mode='min', factor=0.5,
+  patience=10, min_lr=1e-6, monitor=val_loss)
 - Gradient clipping: max_norm=1.0
 - 30 seeds per config
+
+### Early Stopping Strategy (MTL-specific)
+- Monitor: val_binary_accuracy (NOT val_loss)
+- Patience: 35
+- Reason: Uncertainty-weighted composite loss fluctuates
+  non-monotonically during σ parameter convergence
+  (first 20-30 epochs). val_binary_accuracy gives a
+  cleaner signal for our primary classification task.
+- LR scheduler monitors val_loss separately — correct
+  behavior for composite optimization.
+- Reference: LSTM-Forest MTL paper (ScienceDirect 2021)
+- Max epochs raised to 150: with patience=35 and two
+  possible LR reductions (~epoch 35, ~epoch 70), models
+  may legitimately need 120-130 epochs to converge.
+- LR patience raised to 10: val_loss oscillates more
+  than single-task models during σ adjustment; patience=10
+  distinguishes genuine plateaus from σ-driven fluctuations.
 
 ---
 

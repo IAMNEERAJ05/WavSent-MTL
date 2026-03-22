@@ -10,6 +10,7 @@ All tests use synthetic data — no real data files required.
 
 import os
 import sys
+import json
 import numpy as np
 import pandas as pd
 import pytest

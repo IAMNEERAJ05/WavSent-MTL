@@ -42,7 +42,7 @@ def load_price_data() -> pd.DataFrame:
     date_candidates = [c for c in df.columns if c.lower() in ('date', 'date_')]
     if date_candidates:
         df = df.rename(columns={date_candidates[0]: 'Date'})
-    df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
+    df['Date'] = pd.to_datetime(df['Date'], dayfirst=True, errors='coerce')
     df = df.dropna(subset=['Date'])
     df = df.sort_values('Date').reset_index(drop=True)
     keep = ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
@@ -74,6 +74,9 @@ def load_kotekar_sentiment() -> pd.DataFrame:
     pol_col = CONFIG['kotekar_polarity_col']
     df[date_col] = pd.to_datetime(df[date_col], errors='coerce')
     df = df.dropna(subset=[date_col])
+    # Handle actual column name 'polarity' vs config name 'polarity_mean'
+    if pol_col not in df.columns and 'polarity' in df.columns:
+        df = df.rename(columns={'polarity': pol_col})
     daily = (
         df.groupby(date_col)
         .agg(polarity_mean=(pol_col, 'mean'))

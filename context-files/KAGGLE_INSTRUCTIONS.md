@@ -92,6 +92,21 @@ for model_name in ['tkan','lstm','gru','tcn']:
 
 ---
 
+## Runtime Estimates (Updated for patience=35, max_epochs=150)
+
+| Notebook | Estimated GPU time (T4 x2) |
+|----------|---------------------------|
+| 05 — Hyperparameter Tuning | ~30-40 min (search trials use 50-epoch cap) |
+| 06 — Kotekar Training | ~3-5 hrs (6 configs × 30 seeds × up to 150 epochs) |
+| 07 — Kaggle Training | ~3-5 hrs (same structure, slightly larger dataset) |
+| 08 — PSO Ensemble | ~15-20 min |
+
+> With early stopping patience=35 and max_epochs=150, individual seeds
+> may run up to 150 epochs before stopping. Clear GPU memory between
+> configs: `torch.cuda.empty_cache(); gc.collect()`
+
+---
+
 ## Notebook 06 — Kotekar Training
 
 from src.training.trainer import train_multi_run

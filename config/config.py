@@ -4,21 +4,28 @@
 # Import everywhere:
 # from config.config import CONFIG
 
+import os as _os
+
+# Derive project root from this file's location — works locally (D:/WavSent-MTL)
+# and on Kaggle (/kaggle/working/WavSent-MTL) without any changes.
+_ROOT = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))).replace('\\', '/')
+
 CONFIG = {
 
     # ─────────────────────────────────────
-    # PATHS
+    # PATHS  (absolute, environment-agnostic)
     # ─────────────────────────────────────
-    'raw_data_dir':          'data/raw/',
-    'finbert_output_dir':    'data/finbert_outputs/',
-    'kotekar_processed_dir': 'data/processed/kotekar/',
-    'kaggle_processed_dir':  'data/processed/kaggle/',
-    'results_dir':           'results/',
-    'figures_dir':           'results/figures/',
-    'tables_dir':            'results/tables/',
-    'models_dir':            'results/saved_models/',
-    'logs_dir':              'logs/training_logs/',
-    'ablation_dir':          'ablation/results/',
+    'project_root':          _ROOT + '/',
+    'raw_data_dir':          _ROOT + '/data/raw/',
+    'finbert_output_dir':    _ROOT + '/data/finbert_outputs/',
+    'kotekar_processed_dir': _ROOT + '/data/processed/kotekar/',
+    'kaggle_processed_dir':  _ROOT + '/data/processed/kaggle/',
+    'results_dir':           _ROOT + '/results/',
+    'figures_dir':           _ROOT + '/results/figures/',
+    'tables_dir':            _ROOT + '/results/tables/',
+    'models_dir':            _ROOT + '/results/saved_models/',
+    'logs_dir':              _ROOT + '/logs/training_logs/',
+    'ablation_dir':          _ROOT + '/ablation/results/',
 
     # ─────────────────────────────────────
     # DATA
@@ -135,27 +142,27 @@ CONFIG = {
     'best_params': {
         'tkan': {
             'hidden_size':   64,
-            'dropout':       0.2,
+            'dropout':       0.1,
             'learning_rate': 1e-3,
             'batch_size':    32,
         },
         'lstm': {
             'hidden_size':   64,
-            'dropout':       0.2,
+            'dropout':       0.1,
             'learning_rate': 1e-3,
             'batch_size':    32,
-            'num_layers':    1,
+            'num_layers':    2,
         },
         'gru': {
-            'hidden_size':   64,
-            'dropout':       0.2,
+            'hidden_size':   128,
+            'dropout':       0.3,
             'learning_rate': 1e-3,
             'batch_size':    32,
             'num_layers':    1,
         },
         'tcn': {
             'hidden_size':   64,
-            'dropout':       0.2,
+            'dropout':       0.1,
             'learning_rate': 1e-3,
             'batch_size':    32,
             'kernel_size':   2,
@@ -187,12 +194,13 @@ CONFIG = {
     # ─────────────────────────────────────
     'optimizer':             'adam',
     'weight_decay':          1e-4,
-    'max_epochs':            100,
-    'early_stopping_patience': 15,
-    'early_stopping_monitor':  'val_loss',
+    'max_epochs':              150,
+    'early_stopping_patience': 35,
+    'early_stopping_monitor':  'val_binary_accuracy',
     'restore_best_weights':    True,
     'lr_reduce_factor':        0.5,
-    'lr_reduce_patience':      7,
+    'lr_reduce_patience':      10,
+    'lr_reduce_monitor':       'val_loss',
     'lr_min':                  1e-6,
     'grad_clip_norm':          1.0,
     'n_runs':                  30,

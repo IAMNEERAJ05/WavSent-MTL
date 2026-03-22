@@ -93,7 +93,9 @@ def evaluate_params(
         lr=params['learning_rate'],
         weight_decay=CONFIG['weight_decay'],
     )
-    early_stop = EarlyStopping(patience=10)
+    # Explicitly monitor val_loss during search trials (not val_binary_accuracy)
+    # — hyperparameter selection optimises composite loss, not just accuracy.
+    early_stop = EarlyStopping(patience=10, monitor='val_loss')
     bce_fn = nn.BCELoss()
     mse_fn = nn.MSELoss()
     loss_type = CONFIG['loss_type']

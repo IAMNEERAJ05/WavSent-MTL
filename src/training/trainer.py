@@ -132,12 +132,15 @@ def train_single_run(
         lr=lr,
         weight_decay=CONFIG['weight_decay'],
     )
+    # LR reduction on val_loss (composite optimization signal)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimizer,
+        mode='min',
         factor=CONFIG['lr_reduce_factor'],
         patience=CONFIG['lr_reduce_patience'],
         min_lr=CONFIG['lr_min'],
     )
+    # Early stopping on val_binary_accuracy (primary task signal)
     early_stop = EarlyStopping()
 
     # BCE with optional class weights
@@ -186,9 +189,17 @@ def train_single_run(
                         model.log_sigma1, model.log_sigma2).item()
                 else:
                     val_loss = fixed_weighted_loss(val_mse, val_bce).item()
+                # Track val_binary_accuracy separately from val_loss
+                val_bin_acc = (
+                    (clf_v.squeeze() > 0.5) == yc_v.squeeze().bool()
+                ).float().mean().item()
 
+        # LR reduction on val_loss (composite optimization signal)
         scheduler.step(val_loss)
-        early_stop(val_loss, model)
+        # Early stopping on val_binary_accuracy (primary task signal)
+        # Rationale: uncertainty-weighted loss fluctuates during σ convergence
+        # (first 20-30 epochs); val_binary_accuracy is a clean classification signal.
+        early_stop(val_bin_acc, model)
         if early_stop.stop:
             break
 

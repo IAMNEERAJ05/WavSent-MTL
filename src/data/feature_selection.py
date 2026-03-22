@@ -141,8 +141,15 @@ def shap_filter(X_train: np.ndarray,
         background = X_t[:bg_size]
         explainer = shap.GradientExplainer(model, background)
         shap_vals = explainer.shap_values(X_t[:100])
-        # shap_vals: [n_samples, window, n_features]
-        mean_abs = np.abs(np.array(shap_vals)).mean(axis=(0, 1))  # [n_features]
+        # GradientExplainer may return list[array] — unwrap if so
+        if isinstance(shap_vals, list):
+            shap_vals = shap_vals[0]
+        shap_arr = np.array(shap_vals)
+        # Shape may be (n_samples, window, n_features, 1) — squeeze trailing dim
+        if shap_arr.ndim == 4:
+            shap_arr = shap_arr[..., 0]
+        # shap_arr: (n_samples, window, n_features)
+        mean_abs = np.abs(shap_arr).mean(axis=(0, 1))  # [n_features]
         all_shap.append(mean_abs)
 
     avg_shap = np.mean(all_shap, axis=0)

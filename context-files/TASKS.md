@@ -12,91 +12,99 @@
 ## PHASE 1 — Data Preparation (Local PC)
 
 ### Setup
-- [ ] 1.1  Create full folder structure
+- [x] 1.1  Create full folder structure
            (see FOLDER_STRUCTURE.md)
-- [ ] 1.2  Initialize GitHub repo, push structure
-- [ ] 1.3  Create requirements.txt
-- [ ] 1.4  Create config/config.py
-- [ ] 1.5  Copy finbert outputs from WSMTE project:
+- [x] 1.2  Initialize GitHub repo, push structure
+- [x] 1.3  Create requirements.txt
+- [x] 1.4  Create config/config.py
+- [x] 1.5  Copy finbert outputs from WSMTE project:
            kotekar_sentiment.csv
            kaggle1_polarity.csv
            kaggle2_polarity.csv
            → data/finbert_outputs/
-- [ ] 1.6  Verify kotekar_sentiment.csv columns:
+- [x] 1.6  Verify kotekar_sentiment.csv columns:
            date, company, polarity_mean
-- [ ] 1.7  Verify kaggle1_polarity.csv columns:
+- [x] 1.7  Verify kaggle1_polarity.csv columns:
            date, polarity_mean, polarity_max
-- [ ] 1.8  Verify kaggle2_polarity.csv columns:
+- [x] 1.8  Verify kaggle2_polarity.csv columns:
            date, polarity_mean, polarity_max
 
 ### Notebook 01 — Kotekar Data Prep (Local)
-- [ ] 1.9  Download Nifty50 OHLCV via yfinance
+- [x] 1.9  Download Nifty50 OHLCV via yfinance
            Jan 2017 – May 2024
            → data/raw/nifty50_ohlcv.csv
-- [ ] 1.10 Merge kotekar sentiment with price data
-- [ ] 1.11 Verify missing dates filled polarity_mean=0
-- [ ] 1.12 Save → data/processed/kotekar/merged_data.csv
-- [ ] 1.13 Push to GitHub
+- [x] 1.10 Merge kotekar sentiment with price data
+- [x] 1.11 Verify missing dates filled polarity_mean=0
+- [x] 1.12 Save → data/processed/kotekar/merged_data.csv
+- [x] 1.13 Push to GitHub
 
 ### Notebook 02 — Kaggle Data Prep (Local)
-- [ ] 1.14 Merge kaggle1 + kaggle2 sentiment
-- [ ] 1.15 Merge with price data
-- [ ] 1.16 Verify gap May–Dec 2021:
+- [x] 1.14 Merge kaggle1 + kaggle2 sentiment
+- [x] 1.15 Merge with price data
+- [x] 1.16 Verify gap May–Dec 2021:
            polarity_mean=0, polarity_max=0
-- [ ] 1.17 Save → data/processed/kaggle/merged_data.csv
-- [ ] 1.18 Push to GitHub
+- [x] 1.17 Save → data/processed/kaggle/merged_data.csv
+- [x] 1.18 Push to GitHub
 
 ### Notebook 03 — Feature Engineering (Local)
-- [ ] 1.19 Apply Coif3 denoising to OHLCV
+- [x] 1.19 Apply Coif3 denoising to OHLCV
            (both datasets)
-- [ ] 1.20 Compute all 15 candidate features
+- [x] 1.20 Compute all 15 candidate features
            on denoised prices (both datasets)
-- [ ] 1.21 Verify all features computed correctly
+- [x] 1.21 Verify all features computed correctly
            (spot check RSI range 0-100,
             MACD sign matches price direction)
-- [ ] 1.22 Save → data/processed/{dataset}/
+- [x] 1.22 Save → data/processed/{dataset}/
            featured_data.csv
-- [ ] 1.23 Push to GitHub
+- [x] 1.23 Push to GitHub
 
 ### Notebook 04 — Feature Selection (Local)
-- [ ] 1.24 70/15/15 split on Kotekar featured_data
-- [ ] 1.25 MI ranking on Kotekar training set
+- [x] 1.24 70/15/15 split on Kotekar featured_data
+- [x] 1.25 MI ranking on Kotekar training set
            → keep top 10
-- [ ] 1.26 Train lightweight LSTM (32 units, 10 seeds)
+- [x] 1.26 Train lightweight LSTM (32 units, 10 seeds)
            on top 10 features
-- [ ] 1.27 Compute SHAP → keep top 6-7
-- [ ] 1.28 Save selected_features.json (kotekar)
-- [ ] 1.29 Apply same features to Kaggle
-- [ ] 1.30 Save selected_features.json (kaggle)
-- [ ] 1.31 Run full pipeline (Steps 9-16) for kotekar:
+- [x] 1.27 Compute SHAP → keep top 6-7
+- [x] 1.28 Save selected_features.json (kotekar)
+- [x] 1.29 Apply same features to Kaggle
+- [x] 1.30 Save selected_features.json (kaggle)
+- [x] 1.31 Run full pipeline (Steps 9-16) for kotekar:
            scale, window, targets, class weights
            save all .npy arrays
-- [ ] 1.32 Run full pipeline (Steps 9-16) for kaggle:
+- [x] 1.32 Run full pipeline (Steps 9-16) for kaggle:
            scale, window, targets, class weights
            save all .npy arrays
-- [ ] 1.33 Verify array shapes match expected
-- [ ] 1.34 Run pytest tests/ -v → all pass
-- [ ] 1.35 Push all to GitHub
+- [x] 1.33 Verify array shapes match expected
+- [x] 1.34 Run pytest tests/ -v → all pass
+- [x] 1.35 Push all to GitHub
 
 ---
 
 ## PHASE 2 — Hyperparameter Tuning (Kaggle GPU)
 
 ### Notebook 05 — Random Search (Kaggle T4 2x)
-- [ ] 2.1  Clone repo in Kaggle
-- [ ] 2.2  Upload kotekar processed arrays as
+- [x] 2.1  Clone repo in Kaggle
+- [x] 2.2  Upload kotekar processed arrays as
            Kaggle dataset: wavsent-kotekar-processed
-- [ ] 2.3  Run random search for TKAN (40 trials)
+- [x] 2.3  Run random search for TKAN (40 trials)
            → save best_params_tkan.json
-- [ ] 2.4  Run random search for LSTM (40 trials)
+           NOTE: search minimizes val_loss (composite
+           optimization). val_binary_accuracy also logged
+           per trial. patience=35, max_epochs=150 apply
+           to full training runs (not search trials).
+- [x] 2.4  Run random search for LSTM (40 trials)
            → save best_params_lstm.json
-- [ ] 2.5  Run random search for GRU (40 trials)
+- [x] 2.5  Run random search for GRU (40 trials)
            → save best_params_gru.json
-- [ ] 2.6  Run random search for TCN (40 trials)
+- [x] 2.6  Run random search for TCN (40 trials)
            → save best_params_tcn.json
-- [ ] 2.7  Download all 4 best_params json files
-- [ ] 2.8  Update config/config.py with best params
-- [ ] 2.9  Push to GitHub
+- [x] 2.7  Download all 4 best_params json files
+- [x] 2.8  Update config/config.py with best params
+- [x] 2.9  Push to GitHub
+           NOTE: also updated early stopping strategy
+           (patience=35, monitor=val_binary_accuracy,
+           max_epochs=150, lr_reduce_patience=10) per
+           MTL uncertainty-weighting convergence requirements.
 
 ---
 
