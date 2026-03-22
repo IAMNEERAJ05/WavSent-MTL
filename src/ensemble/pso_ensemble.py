@@ -152,9 +152,6 @@ def run_pso_search(
         verbose=True,
     )
     best_weights = _softmax(best_pos)
-    MIN_WEIGHT = 0.10  # each model gets at least 10%
-    best_weights = np.clip(best_weights, MIN_WEIGHT, None)
-    best_weights = best_weights / best_weights.sum()  # renormalize to sum=1
     weights_dict = {m: float(best_weights[i]) for i, m in enumerate(model_names)}
 
     print(f"PSO best val accuracy: {-best_cost:.4f}")
