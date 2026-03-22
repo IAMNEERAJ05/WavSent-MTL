@@ -205,7 +205,11 @@ def train_single_run(
 
     # Restore best weights
     early_stop.restore(model)
-
+        # ── ADD THIS TEMPORARILY ─────────────────────────────────────
+    print(f"  Stopped at epoch {epoch + 1} / {max_epochs} | "
+          f"Best val_acc: {early_stop.best_score:.4f}")
+    # ─────────────────────────────────────────────────────────────
+    
     # ── Collect predictions ──────────────────────────────────────
     model.eval()
     with torch.no_grad():
