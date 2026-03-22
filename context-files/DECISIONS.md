@@ -142,9 +142,18 @@ ALL computed on DENOISED prices only:
 - Return: output at final timestep → [batch, hidden_size]
 
 ### TKAN Encoder
-- Original Genet & Inzirillo implementation
-- spline_order=3 (fixed, repo default)
-- Return: final output → [batch, hidden_size]
+- TKAN: Implemented from scratch in PyTorch.
+  The original remigenet/TKAN repo is TensorFlow-based
+  and incompatible with our PyTorch pipeline.
+  Our implementation follows Genet & Inzirillo (2024):
+  LSTM cell where gate linear transformations are
+  replaced by KANLinear (spline-augmented linear layer
+  using polynomial basis functions as B-spline
+  approximation). KANLinear = nn.Linear + learnable
+  spline weights. This is defensible in the paper as:
+  'We provide a PyTorch reimplementation of TKAN
+  following Genet & Inzirillo (2024), enabling
+  integration with our PyTorch MTL pipeline.'
 
 ### Excluded Architectures
 - Transformer: needs large dataset

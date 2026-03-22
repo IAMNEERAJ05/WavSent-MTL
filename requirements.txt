@@ -1,7 +1,6 @@
 # WavSent-MTL — Requirements
 # Python 3.13 compatible
 # Install with: pip install -r requirements.txt
-# Then separately: pip install git+https://github.com/remigenet/TKAN.git
 
 # ── Core Framework ──────────────────────────────────
 # PyTorch: install via https://pytorch.org/ for your CUDA version
@@ -30,9 +29,6 @@ pyswarms>=1.3.0
 
 # ── SHAP ─────────────────────────────────────────────
 shap>=0.45.1
-
-# ── TKAN (install from GitHub separately) ────────────
-# pip install git+https://github.com/remigenet/TKAN.git
 
 # ── TCN ──────────────────────────────────────────────
 pytorch-tcn>=1.2.0
