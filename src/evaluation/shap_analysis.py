@@ -74,9 +74,27 @@ def run_shap_analysis(
     explainer = shap.GradientExplainer(clf_model, background)
     shap_values = explainer.shap_values(explain_data)
 
-    # shap_values shape: [n_explain, window, n_features]
-    shap_arr = np.array(shap_values)
+    # DEBUG: inspect raw SHAP output before any reshaping
+    print(f'[SHAP DEBUG] type(shap_values)={type(shap_values)}')
+    if isinstance(shap_values, list):
+        print(f'[SHAP DEBUG] list len={len(shap_values)}, shap_values[0].shape={np.array(shap_values[0]).shape}')
+    else:
+        print(f'[SHAP DEBUG] array shape={np.array(shap_values).shape}')
+
+    # GradientExplainer output shape varies by SHAP version / model output:
+    #   list of arrays  → [n_outputs][n_explain, window, n_features]  (multi-output)
+    #   single ndarray  → [n_explain, window, n_features, 1]          (single sigmoid output)
+    #   single ndarray  → [n_explain, window, n_features]             (already squeezed)
+    if isinstance(shap_values, list):
+        shap_arr = np.array(shap_values[0])   # take first (only) output
+    else:
+        shap_arr = np.array(shap_values)
+        if shap_arr.ndim == 4:
+            shap_arr = shap_arr[..., 0]       # squeeze trailing output dim
+    # shap_arr: [n_explain, window, n_features]
+    print(f'[SHAP DEBUG] shap_arr.shape after reshape={shap_arr.shape}')
     mean_abs_shap = np.abs(shap_arr).mean(axis=1)  # [n_explain, n_features]
+    print(f'[SHAP DEBUG] mean_abs_shap.shape={mean_abs_shap.shape}')
 
     if save_fig:
         fig_dir = os.path.join(CONFIG['figures_dir'], dataset)
@@ -84,12 +102,13 @@ def run_shap_analysis(
         save_path = os.path.join(fig_dir, 'shap_summary.png')
 
         mean_per_feat = mean_abs_shap.mean(axis=0)  # [n_features]
-        sorted_idx = np.argsort(mean_per_feat)[::-1]
+        # ascending order for barh (lowest importance at bottom)
+        sorted_idx = np.argsort(mean_per_feat)
 
         plt.figure(figsize=(10, 6))
         plt.barh(
-            [feature_names[i] for i in sorted_idx[::-1]],
-            mean_per_feat[sorted_idx[::-1]],
+            [feature_names[i] for i in sorted_idx],
+            mean_per_feat[sorted_idx],
         )
         plt.xlabel('Mean |SHAP value|')
         plt.title(f'SHAP Feature Importance — {dataset}')
