@@ -27,7 +27,7 @@ WavSent-MTL is a PyTorch multi-task learning framework for next-day Nifty50 inde
 | D | LSTM | Denoised technicals | 0.5724 | 0.5407 | 0.6282 | 0.5376 |
 | **E** | **GRU** | **Denoised technicals** | **0.5921** | **0.6576** | 0.6474 | 0.5991 |
 | F | TCN | Denoised technicals | 0.5744 | 0.6423 | 0.6410 | 0.5923 |
-| G | PSO Ensemble | All models | 0.5641 | 0.6412 | — | 0.5735 |
+| G | PSO Ensemble | All models | 0.5641 | 0.6345 | — | 0.5735 |
 | *Benchmark* | *Kotekar et al.* | — | *0.5853* | — | — | — |
 
 Config E (GRU+MTL) achieves mean accuracy **0.5921**, beating the Kotekar et al. benchmark by **+0.0068**.
@@ -43,10 +43,10 @@ Trading simulation on the best model: **Sharpe = 2.5248** vs. benchmark Sharpe =
 | D | LSTM | Denoised technicals | 0.6702 | 0.7155 | 0.7057 | 0.6633 |
 | E | GRU | Denoised technicals | 0.6630 | 0.7168 | 0.6868 | 0.6552 |
 | F | TCN | Denoised technicals | 0.6452 | 0.7063 | 0.6830 | 0.6412 |
-| G | PSO Ensemble | All models | 0.6755 | **0.7281** | — | 0.6735 |
+| G | PSO Ensemble | All models | **0.6906** | **0.7276** | — | 0.6735 |
 | *Benchmark* | *Kotekar et al.* | — | *0.5853* | — | — | — |
 
-All configs from C onward beat the Kotekar benchmark. Config G ensemble achieves **AUC = 0.7281**.
+All configs from C onward beat the Kotekar benchmark. Config G ensemble achieves accuracy **0.6906** and **AUC = 0.7276**.
 Trading simulation: **Sharpe = 2.0478**, Cumulative Return = **24.74%**, Win Rate = **65.3%**.
 
 ---
@@ -403,7 +403,7 @@ Seven configurations isolate the contribution of each component:
 | D | 0.5724 | 0.0162 | 0.5407 | 0.0912 | 0.5376 | 0.6282 |
 | **E** | **0.5921** | 0.0197 | **0.6576** | 0.0109 | **0.5991** | 0.6474 |
 | F | 0.5744 | 0.0282 | 0.6423 | 0.0242 | 0.5923 | 0.6410 |
-| G | 0.5641 | — | 0.6412 | — | 0.5735 | — |
+| G | 0.5641 | — | 0.6345 | — | 0.5735 | — |
 | *Benchmark* | *0.5853* | — | — | — | — | — |
 
 Trading simulation results (best model, long-only, 6% annual risk-free rate):
@@ -426,7 +426,7 @@ Trading simulation results (best model, long-only, 6% annual risk-free rate):
 | D | 0.6702 | 0.0202 | 0.7155 | 0.0471 | 0.6633 | 0.7057 |
 | E | 0.6630 | 0.0151 | 0.7168 | 0.0086 | 0.6552 | 0.6868 |
 | F | 0.6452 | 0.0214 | 0.7063 | 0.0086 | 0.6412 | 0.6830 |
-| G | 0.6755 | — | **0.7281** | — | 0.6735 | — |
+| G | **0.6906** | — | **0.7276** | — | 0.6735 | — |
 | *Benchmark* | *0.5853* | — | — | — | — | — |
 
 Trading simulation results (best model, long-only, 6% annual risk-free rate):
@@ -444,8 +444,8 @@ PSO searches on saved validation predictions from the best seed of each encoder,
 
 | Dataset | TKAN | LSTM | GRU | TCN | Dominant |
 |---------|:----:|:----:|:---:|:---:|:--------:|
-| Kotekar | — | — | — | ~74.9% | TCN |
-| Kaggle | — | ~96.1% | — | — | LSTM |
+| Kotekar | 4.8% | 6.9% | 5.7% | **82.6%** | TCN |
+| Kaggle | 0.2% | **99.0%** | 0.7% | 0.04% | LSTM |
 
 See [Limitations](#-limitations) for a discussion of PSO weight collapse.
 
