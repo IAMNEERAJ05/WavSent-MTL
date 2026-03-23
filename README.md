@@ -158,11 +158,15 @@ WavSent-MTL/
 │   ├── run_ablation_kaggle.py      ← configs A–G, Kaggle dataset
 │   └── results/
 │       ├── kotekar/
-│       │   ├── kotekar_ablation_partial.csv
-│       │   └── val_predictions/
+│       │   ├── kotekar_ablation_partial.csv  ← per-seed raw results (A–F)
+│       │   ├── ensemble_results_kotekar.csv  ← Config G single-run result
+│       │   ├── pso_weights_kotekar.json      ← PSO weights + individual accs
+│       │   └── val_predictions/              ← saved .npy val/test predictions
 │       └── kaggle/
-│           ├── kaggle_ablation_partial.csv
-│           └── val_predictions/
+│           ├── kaggle_ablation_partial.csv   ← per-seed raw results (A–F)
+│           ├── ensemble_results_kaggle.csv   ← Config G single-run result
+│           ├── pso_weights_kaggle.json       ← PSO weights + individual accs
+│           └── val_predictions/              ← saved .npy val/test predictions
 │
 ├── baselines/
 │   ├── run_baselines.py            ← SVM + RF baselines
@@ -186,11 +190,13 @@ WavSent-MTL/
 │   │   └── kaggle/
 │   └── tables/
 │       ├── kotekar/
-│       │   ├── ablation_summary.csv
+│       │   ├── ablation_summary.csv  ← A–G, all metrics (canonical)
+│       │   ├── pso_weights.json
 │       │   ├── trading_results.csv
 │       │   └── granger_results.csv
 │       └── kaggle/
-│           ├── ablation_summary.csv
+│           ├── ablation_summary.csv  ← A–G, all metrics (canonical)
+│           ├── pso_weights.json
 │           ├── trading_results.csv
 │           └── granger_results.csv
 │
@@ -438,6 +444,34 @@ Trading simulation results (best model, long-only, 6% annual risk-free rate):
 | Number of Trades | 147 |
 | Win Rate | 65.3% |
 
+### Regression Metrics (MTL Auxiliary Head)
+
+Config G regression metrics are PSO-weight-averaged across the constituent model means (C=TKAN, D=LSTM, E=GRU, F=TCN). Configs A–F are 30-seed means.
+
+**Kotekar Dataset:**
+
+| Config | RMSE | MAE | R² |
+|--------|:----:|:---:|:--:|
+| A | 0.4053 | 0.3295 | -0.0088 |
+| B | 0.4070 | 0.3331 | -0.0177 |
+| C | 0.3600 | 0.2859 | 0.2038 |
+| D | 0.3902 | 0.3139 | 0.0618 |
+| **E** | **0.3680** | **0.2880** | **0.1675** |
+| F | 0.3720 | 0.2892 | 0.1492 |
+| G | 0.3725 | 0.2907 | 0.1468 |
+
+**Kaggle Dataset:**
+
+| Config | RMSE | MAE | R² |
+|--------|:----:|:---:|:--:|
+| A | 0.7779 | 0.6039 | -0.0155 |
+| B | 0.7767 | 0.6027 | -0.0123 |
+| **C** | **0.7216** | **0.5563** | **0.1262** |
+| D | 0.6694 | 0.5079 | 0.2475 |
+| E | 0.6806 | 0.5205 | 0.2224 |
+| F | 0.6994 | 0.5290 | 0.1789 |
+| G | 0.6694 | 0.5081 | 0.2470 |
+
 ### PSO Ensemble Weights (Config G)
 
 PSO searches on saved validation predictions from the best seed of each encoder, using softmax-normalized weights. Due to weight collapse on small validation sets, one model dominates per dataset:
@@ -447,13 +481,23 @@ PSO searches on saved validation predictions from the best seed of each encoder,
 | Kotekar | 4.8% | 6.9% | 5.7% | **82.6%** | TCN |
 | Kaggle | 0.2% | **99.0%** | 0.7% | 0.04% | LSTM |
 
+**Individual model test accuracies feeding into Config G:**
+
+| Model | Kotekar Test Acc | Kaggle Test Acc |
+|-------|:----------------:|:---------------:|
+| TKAN (Config C) | 0.5897 | 0.6981 |
+| LSTM (Config D) | 0.5897 | 0.6943 |
+| GRU  (Config E) | 0.5962 | 0.6755 |
+| TCN  (Config F) | 0.5833 | 0.5849 |
+| **Ensemble (Config G)** | **0.5641** | **0.6906** |
+
 See [Limitations](#-limitations) for a discussion of PSO weight collapse.
 
 ---
 
 ## ⚠️ Limitations
 
-1. **PSO Weight Collapse.** On small validation sets (Kotekar: ~165 samples), PSO converges to near-degenerate weights dominated by a single model (TCN on Kotekar at ~74.9%, LSTM on Kaggle at ~96.1%). This is a known failure mode of particle swarm optimization in low-sample regimes. The ensemble (Config G) does not consistently outperform the best individual model on Kotekar and should be interpreted as an upper-bound experiment rather than a reliable combination strategy.
+1. **PSO Weight Collapse.** On small validation sets (Kotekar: ~165 samples), PSO converges to near-degenerate weights dominated by a single model (TCN on Kotekar at 82.6%, LSTM on Kaggle at 99.0%). This is a known failure mode of particle swarm optimization in low-sample regimes. The ensemble (Config G) does not consistently outperform the best individual model on Kotekar and should be interpreted as an upper-bound experiment rather than a reliable combination strategy.
 
 2. **Validation–Test Gap on Kotekar.** Config G accuracy (0.5641) falls below the best individual model (Config E: 0.5921) on the Kotekar test set. The PSO fitness landscape on the small Kotekar validation set does not generalize reliably to the test set.
 
