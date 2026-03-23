@@ -227,7 +227,7 @@ def run_config_g(device='cpu'):
 
     # Save PSO weights
     import json
-    weights_path = os.path.join(CONFIG['tables_dir'], DATASET, 'pso_weights.json')
+    weights_path = os.path.join(CONFIG['ablation_dir'], DATASET, f'pso_weights_{DATASET}.json')
     os.makedirs(os.path.dirname(weights_path), exist_ok=True)
     with open(weights_path, 'w') as f:
         json.dump(weights, f, indent=2)

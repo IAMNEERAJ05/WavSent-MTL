@@ -180,7 +180,7 @@ def run_config_g(device='cpu'):
     all_results = pd.concat([all_results, pd.DataFrame([row])], ignore_index=True)
     all_results.to_csv(results_path, index=False)
 
-    weights_path = os.path.join(CONFIG['tables_dir'], DATASET, 'pso_weights.json')
+    weights_path = os.path.join(CONFIG['ablation_dir'], DATASET, f'pso_weights_{DATASET}.json')
     os.makedirs(os.path.dirname(weights_path), exist_ok=True)
     with open(weights_path, 'w') as f:
         json.dump(weights, f, indent=2)

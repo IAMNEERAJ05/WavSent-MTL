@@ -191,12 +191,10 @@ WavSent-MTL/
 │   └── tables/
 │       ├── kotekar/
 │       │   ├── ablation_summary.csv  ← A–G, all metrics (canonical)
-│       │   ├── pso_weights.json
 │       │   ├── trading_results.csv
 │       │   └── granger_results.csv
 │       └── kaggle/
 │           ├── ablation_summary.csv  ← A–G, all metrics (canonical)
-│           ├── pso_weights.json
 │           ├── trading_results.csv
 │           └── granger_results.csv
 │
