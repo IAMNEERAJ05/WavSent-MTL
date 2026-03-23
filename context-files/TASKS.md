@@ -111,66 +111,66 @@
 ## PHASE 3 — Training (Kaggle GPU)
 
 ### Notebook 06 — Kotekar Ablation (Kaggle T4 2x)
-- [ ] 3.1  Pull latest repo in Kaggle
-- [ ] 3.2  Run Config A — 30 seeds — save results
-- [ ] 3.3  Run Config B — 30 seeds — save results
-- [ ] 3.4  Run Config C — 30 seeds — save results
-- [ ] 3.5  Compare B vs C on mean val accuracy
-- [ ] 3.6  Update BEST_REPR in config.py
-- [ ] 3.7  Run Config D (LSTM) — 30 seeds
-- [ ] 3.8  Run Config E (GRU) — 30 seeds
-- [ ] 3.9  Run Config F (TCN) — 30 seeds
-- [ ] 3.10 Save best model weights per config (.pt)
-- [ ] 3.11 Download kotekar_ablation_partial.csv
-- [ ] 3.12 Push to GitHub
+- [x] 3.1  Pull latest repo in Kaggle
+- [x] 3.2  Run Config A — 30 seeds — save results
+- [x] 3.3  Run Config B — 30 seeds — save results
+- [x] 3.4  Run Config C — 30 seeds — save results
+- [x] 3.5  Compare B vs C on mean val accuracy
+- [x] 3.6  Update BEST_REPR in config.py
+- [x] 3.7  Run Config D (LSTM) — 30 seeds
+- [x] 3.8  Run Config E (GRU) — 30 seeds
+- [x] 3.9  Run Config F (TCN) — 30 seeds
+- [x] 3.10 Save best model weights per config (.pt)
+- [x] 3.11 Download kotekar_ablation_partial.csv
+- [x] 3.12 Push to GitHub
 
 ### Notebook 07 — Kaggle Ablation (Kaggle T4 2x)
-- [ ] 3.13 Upload kaggle processed arrays as
+- [x] 3.13 Upload kaggle processed arrays as
            Kaggle dataset: wavsent-kaggle-processed
-- [ ] 3.14 Run Configs A–F on Kaggle dataset
+- [x] 3.14 Run Configs A–F on Kaggle dataset
            (same structure as notebook 06)
-- [ ] 3.15 Save kaggle_ablation_partial.csv
-- [ ] 3.16 Push to GitHub
+- [x] 3.15 Save kaggle_ablation_partial.csv
+- [x] 3.16 Push to GitHub
 
 ### Notebook 08 — PSO Ensemble (Kaggle T4 2x)
-- [ ] 3.17 Load best seed val predictions from
+- [x] 3.17 Load best seed val predictions from
            configs C/D/E/F (or B/D/E/F) per dataset
-- [ ] 3.18 Run PSO weight search on kotekar val preds
+- [x] 3.18 Run PSO weight search on kotekar val preds
            → save pso_weights_kotekar.json
-- [ ] 3.19 Apply PSO weights to kotekar test preds
+- [x] 3.19 Apply PSO weights to kotekar test preds
            → save Config G kotekar metrics
-- [ ] 3.20 Run PSO weight search on kaggle val preds
+- [x] 3.20 Run PSO weight search on kaggle val preds
            → save pso_weights_kaggle.json
-- [ ] 3.21 Apply PSO weights to kaggle test preds
+- [x] 3.21 Apply PSO weights to kaggle test preds
            → save Config G kaggle metrics
-- [ ] 3.22 Download all results and weights
-- [ ] 3.23 Push to GitHub
+- [x] 3.22 Download all results and weights
+- [x] 3.23 Push to GitHub
 
 ---
 
 ## PHASE 4 — Evaluation (Local PC)
 
 ### Notebook 09 — Full Evaluation (Local)
-- [ ] 4.1  Merge all ablation results per dataset
-- [ ] 4.2  Compute mean, max, std per config
-- [ ] 4.3  Run Wilcoxon test (Config A vs Config G)
-- [ ] 4.4  Run Shapiro-Wilk normality check
-- [ ] 4.5  Generate ablation comparison plots
+- [x] 4.1  Merge all ablation results per dataset
+- [x] 4.2  Compute mean, max, std per config
+- [x] 4.3  Run Wilcoxon test (Config A vs Config G)
+- [x] 4.4  Run Shapiro-Wilk normality check
+- [x] 4.5  Generate ablation comparison plots
            (kotekar + kaggle)
-- [ ] 4.6  Generate confusion matrix (best config)
-- [ ] 4.7  Generate AUC-ROC curves
-- [ ] 4.8  Generate loss curves
-- [ ] 4.9  Run SHAP analysis on best config
+- [x] 4.6  Generate confusion matrix (best config)
+- [x] 4.7  Generate AUC-ROC curves
+- [x] 4.8  Generate loss curves
+- [x] 4.9  Run SHAP analysis on best config
            → shap_summary.png
-- [ ] 4.10 Run Granger causality tests
+- [x] 4.10 Run Granger causality tests
            (polarity_mean vs returns, lags 1-5)
-- [ ] 4.11 Run trading simulation (long-only)
-- [ ] 4.12 Compute Sharpe ratios
-- [ ] 4.13 Save all figures → results/figures/
-- [ ] 4.14 Save all tables → results/tables/
-- [ ] 4.15 Run baselines (SVM + RF)
+- [x] 4.11 Run trading simulation (long-only)
+- [x] 4.12 Compute Sharpe ratios
+- [x] 4.13 Save all figures → results/figures/
+- [x] 4.14 Save all tables → results/tables/
+- [x] 4.15 Run baselines (SVM + RF)
            → baselines/run_baselines.py
-- [ ] 4.16 Final GitHub push — complete clean repo
+- [x] 4.16 Final GitHub push — complete clean repo
 
 ---
 
