@@ -94,8 +94,8 @@ def train_single_run(
     seed: int,
     class_weights: Optional[Dict[int, float]] = None,
     device: str = 'cpu',
-) -> Tuple[Dict[str, Any], np.ndarray, np.ndarray]:
-    """Train one seed of a named model and return metrics + predictions.
+) -> Tuple[Dict[str, Any], np.ndarray, np.ndarray, nn.Module]:
+    """Train one seed of a named model and return metrics + predictions + model.
 
     Args:
         model_name:    One of 'tkan', 'lstm', 'gru', 'tcn'.
@@ -232,7 +232,7 @@ def train_single_run(
     reg_metrics = compute_reg_metrics(data['y_reg_val'], val_reg_preds)
 
     metrics = {**test_metrics, **reg_metrics, 'val_accuracy': val_acc}
-    return metrics, val_probs, test_probs
+    return metrics, val_probs, test_probs, model
 
 
 def train_multi_run(
@@ -270,10 +270,11 @@ def train_multi_run(
     best_val_acc = -1.0
     best_val_probs = None
     best_test_probs = None
+    best_model_state = None
 
     for run_idx in range(n_runs):
         seed = run_idx  # seeds 0 … 29
-        metrics, val_probs, test_probs = train_single_run(
+        metrics, val_probs, test_probs, model = train_single_run(
             model_name=model_name,
             n_features=n_features,
             data=data,
@@ -295,6 +296,7 @@ def train_multi_run(
             best_val_acc = metrics['val_accuracy']
             best_val_probs = val_probs
             best_test_probs = test_probs
+            best_model_state = {k: v.cpu().clone() for k, v in model.state_dict().items()}
 
         print(
             f"Config {config_name} | {model_name} | "
@@ -310,6 +312,20 @@ def train_multi_run(
         model_name=model_name,
         dataset=dataset,
     )
+
+    # Save best-seed model weights for SHAP / evaluation
+    models_dir = os.path.join(CONFIG['models_dir'], dataset)
+    os.makedirs(models_dir, exist_ok=True)
+    model_save_path = os.path.join(models_dir, f'{model_name}_best.pt')
+    torch.save(best_model_state, model_save_path)
+    print(f"Saved best model → {model_save_path}")
+
+    # On Kaggle: also save a flat copy directly under /kaggle/working/
+    # so it appears at the top level of the output panel for easy download.
+    kaggle_flat = f'/kaggle/working/{dataset}_{model_name}_best.pt'
+    if os.path.isdir('/kaggle/working'):
+        torch.save(best_model_state, kaggle_flat)
+        print(f"Kaggle copy       → {kaggle_flat}")
 
     return pd.DataFrame(rows, columns=CONFIG['results_columns'])
 
