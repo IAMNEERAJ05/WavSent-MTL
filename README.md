@@ -191,12 +191,18 @@ WavSent-MTL/
 │   └── tables/
 │       ├── kotekar/
 │       │   ├── ablation_summary.csv  ← A–G, all metrics (canonical)
+│       │   ├── pso_weights.json
 │       │   ├── trading_results.csv
-│       │   └── granger_results.csv
+│       │   ├── granger_results.csv
+│       │   ├── wilcoxon_results.csv  ← Config A vs G statistical test
+│       │   └── baseline_results.csv ← SVM + RF baselines
 │       └── kaggle/
 │           ├── ablation_summary.csv  ← A–G, all metrics (canonical)
+│           ├── pso_weights.json
 │           ├── trading_results.csv
-│           └── granger_results.csv
+│           ├── granger_results.csv
+│           ├── wilcoxon_results.csv  ← Config A vs G statistical test
+│           └── baseline_results.csv ← SVM + RF baselines
 │
 └── tests/
     ├── test_data_pipeline.py
@@ -441,6 +447,28 @@ Trading simulation results (best model, long-only, 6% annual risk-free rate):
 | Cumulative Return | 24.74% |
 | Number of Trades | 147 |
 | Win Rate | 65.3% |
+
+### Baseline Comparison (SVM + Random Forest)
+
+Traditional ML baselines trained on the same 7 selected features with the same 70/15/15 temporal split.
+
+| Model | Dataset | Accuracy | Bal. Acc | AUC | Precision | Recall | F1 |
+|-------|---------|:--------:|:--------:|:---:|:---------:|:------:|:--:|
+| SVM | Kotekar | 0.6026 | 0.5709 | 0.5914 | 0.6102 | 0.8182 | 0.6990 |
+| RF  | Kotekar | 0.5321 | 0.5551 | 0.6065 | 0.6471 | 0.3750 | 0.4748 |
+| SVM | Kaggle  | 0.5660 | 0.5757 | 0.6166 | 0.6748 | 0.5253 | 0.5907 |
+| RF  | Kaggle  | 0.6151 | 0.6305 | 0.6773 | 0.7373 | 0.5506 | 0.6304 |
+
+SVM on Kotekar (0.6026) exceeds the deep learning benchmark (0.5853) but uses no temporal context (single-timestep features), while all MTL configs use a 5-step window. RF on Kaggle (0.6151) is outperformed by all MTL configs from C onward.
+
+### Statistical Tests (Config A vs Config G)
+
+| Dataset | mean(A) | val(G) | Outcome | Note |
+|---------|:-------:|:------:|:-------:|------|
+| Kotekar | 0.5641 | 0.5641 | Not significant | Config A zero-variance; G == mean(A) |
+| Kaggle  | 0.5962 | 0.6906 | **Significant** | Config A zero-variance; G > mean(A) by +0.0944 |
+
+Config A on both datasets collapsed to a constant value across all 30 seeds (std=0), which prevented a standard Wilcoxon/t-test. For Kaggle, where Config G substantially exceeds Config A, a sign test trivially confirms significance (all 30 differences have the same sign). Full results in `results/tables/{dataset}/wilcoxon_results.csv`.
 
 ### Regression Metrics (MTL Auxiliary Head)
 

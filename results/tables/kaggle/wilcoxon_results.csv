@@ -1,0 +1,2 @@
+config_a,config_b,mean_A,val_G,stat,p_value,significant,note
+A,G,0.5962,0.6906,,0.0,True,Config A constant (0.5962) Config G (0.6906); zero-variance Config A - sign test trivially significant

@@ -1,0 +1,2 @@
+config_a,config_b,mean_A,val_G,stat,p_value,significant,note
+A,G,0.5641,0.5641,,,False,Config A constant (0.5641) == Config G (0.5641); identical performance - not significant
