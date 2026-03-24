@@ -162,6 +162,11 @@ WavSent-MTL/
 │       │   ├── ensemble_results_kotekar.csv  ← Config G single-run result
 │       │   ├── pso_weights_kotekar.json      ← PSO weights + individual accs
 │       │   └── val_predictions/              ← saved .npy val/test predictions
+│       ├── best_params/                      ← tuning outputs from notebook 05 (shared across datasets)
+│       │   ├── best_params_tkan.json
+│       │   ├── best_params_lstm.json
+│       │   ├── best_params_gru.json
+│       │   └── best_params_tcn.json
 │       └── kaggle/
 │           ├── kaggle_ablation_partial.csv   ← per-seed raw results (A–F)
 │           ├── ensemble_results_kaggle.csv   ← Config G single-run result
@@ -280,7 +285,7 @@ Runs MI ranking on Kotekar training set (top 10), then SHAP-based filtering (top
 jupyter notebook notebooks/05_hyperparam_tuning.ipynb
 ```
 
-40-trial random search per encoder, minimising `val_loss`. Best params written back to `config/config.py`.
+40-trial random search per encoder, minimising `val_loss`. Best params written back to `config/config.py` and saved as `ablation/results/best_params/{model}.json` for provenance. These params are shared across both datasets.
 
 ### Step 5 — Ablation Training (Kaggle GPU)
 
