@@ -176,6 +176,8 @@ WavSent-MTL/
 ├── baselines/
 │   ├── run_baselines.py            ← SVM + RF baselines
 │   └── results/
+│       ├── kotekar_baselines.csv
+│       └── kaggle_baselines.csv
 │
 ├── notebooks/
 │   ├── 01_data_prep_kotekar.ipynb
@@ -191,19 +193,29 @@ WavSent-MTL/
 ├── results/
 │   ├── figures/
 │   │   ├── feature_selection/
+│   │   │   └── mi_scores.png
 │   │   ├── kotekar/
+│   │   │   ├── ablation_comparison.png
+│   │   │   ├── auc_roc_curve.png
+│   │   │   ├── confusion_matrix.png
+│   │   │   ├── shap_summary.png
+│   │   │   ├── trading_simulation.png
+│   │   │   └── wavelet_denoising.png
 │   │   └── kaggle/
+│   │       ├── ablation_comparison.png
+│   │       ├── auc_roc_curve.png
+│   │       ├── confusion_matrix.png
+│   │       ├── shap_summary.png
+│   │       └── trading_simulation.png
 │   └── tables/
 │       ├── kotekar/
 │       │   ├── ablation_summary.csv  ← A–G, all metrics (canonical)
-│       │   ├── pso_weights.json
 │       │   ├── trading_results.csv
 │       │   ├── granger_results.csv
 │       │   ├── wilcoxon_results.csv  ← Config A vs G statistical test
 │       │   └── baseline_results.csv ← SVM + RF baselines
 │       └── kaggle/
 │           ├── ablation_summary.csv  ← A–G, all metrics (canonical)
-│           ├── pso_weights.json
 │           ├── trading_results.csv
 │           ├── granger_results.csv
 │           ├── wilcoxon_results.csv  ← Config A vs G statistical test
@@ -324,6 +336,7 @@ Computes all metrics, generates SHAP plots, runs trading simulation. Results sav
 | Price source | Yahoo Finance (`^NSEI`) |
 | Sentiment source | Moneycontrol (company-level, Nifty50 constituents) |
 | Sentiment columns | `polarity_mean` (FinBERT) |
+| Missing days | Sporadic missing days filled with 0.0 (`polarity_mean = 0`) |
 | Training samples | ~741 |
 | Split | 70/15/15 temporal |
 | Purpose | Direct comparison with Kotekar et al. benchmark |
@@ -536,9 +549,7 @@ See [Limitations](#-limitations) for a discussion of PSO weight collapse.
 
 4. **Small Dataset.** The Kotekar study uses ~741 training samples. While the 30-seed evaluation protocol mitigates variance, performance estimates carry non-trivial uncertainty. The Kaggle study (~1,250 training samples) provides stronger evidence.
 
-5. **FinBERT Reuse.** FinBERT sentiment scores are reused from prior work and not regenerated. The gap period (May–Dec 2021) in the Kaggle dataset is filled with zeros (`polarity_mean=0`, `polarity_max=0`), which may introduce a mild distributional artefact.
-
-6. **No Walk-Forward Cross-Validation.** A single temporal split (70/15/15) is used throughout. Walk-forward cross-validation would provide more robust performance estimates but was deferred due to computational constraints.
+5. **No Walk-Forward Cross-Validation.** A single temporal split (70/15/15) is used throughout. Walk-forward cross-validation would provide more robust performance estimates but was deferred due to computational constraints.
 
 ---
 
