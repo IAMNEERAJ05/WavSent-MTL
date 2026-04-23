@@ -13,6 +13,8 @@
 
 WavSent-MTL is a PyTorch multi-task learning framework for next-day Nifty50 index return direction prediction (UP/DOWN). The pipeline applies Coif3 wavelet denoising to raw OHLCV price data before computing technical indicators, then fuses the resulting features with FinBERT-extracted news sentiment. Four architecturally diverse encoders — TKAN, LSTM, GRU, and TCN — are trained jointly on a regression head (return magnitude) and a classification head (direction), using uncertainty-weighted loss (Kendall et al., CVPR 2018). A PSO-weighted ensemble combines all four models' predictions at inference time. Experiments on two datasets demonstrate consistent improvement over Kotekar et al. (IEEE Access 2026), the primary benchmark.
 
+This project includes AI-assisted development work. Claude was used as a coding assistant for some implementation and documentation tasks, while the final design choices, validation, and repository maintenance remain my responsibility. The reported results and code in this repository were reviewed and organized by me before release.
+
 ---
 
 ## 📊 Key Results

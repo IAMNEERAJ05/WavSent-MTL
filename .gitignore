@@ -67,3 +67,8 @@ Thumbs.db
 *.tmp
 *.bak
 ablation/results/*/ablation_summaryAF.csv
+
+# ── Repo-local docs / workspace artifacts ─────────────
+context-files/
+others/
+.claude/
